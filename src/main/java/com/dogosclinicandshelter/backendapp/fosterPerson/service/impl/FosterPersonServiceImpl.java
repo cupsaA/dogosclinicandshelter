@@ -7,7 +7,7 @@ import com.dogosclinicandshelter.backendapp.fosterPerson.mapper.FosterPersonMapp
 import com.dogosclinicandshelter.backendapp.fosterPerson.model.dto.FosterPersonDto;
 import com.dogosclinicandshelter.backendapp.fosterPerson.model.persistance.FosterPerson;
 import com.dogosclinicandshelter.backendapp.fosterPerson.repository.FosterPersonRepository;
-import com.dogosclinicandshelter.backendapp.fosterPerson.request.FosterPersonRequest;
+import com.dogosclinicandshelter.backendapp.personDataRequest.request.PersonDataRequest;
 import com.dogosclinicandshelter.backendapp.fosterPerson.service.FosterPersonService;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,7 +38,7 @@ public class FosterPersonServiceImpl implements FosterPersonService {
   }
 
   @Override
-  public boolean addFosterPerson(FosterPersonRequest request) {
+  public boolean addFosterPerson(PersonDataRequest request) {
     if (fosterPersonRepository.existsFosterPersonByEmail(request.getEmail())) {
       throw new DuplicateResourceException("email already taken");
     }
@@ -60,7 +60,7 @@ public class FosterPersonServiceImpl implements FosterPersonService {
 
   @Override
   public boolean updateFosterPerson(Long fosterPersonId,
-      FosterPersonRequest updateRequest) {
+      PersonDataRequest updateRequest) {
     FosterPerson fosterPerson = fosterPersonRepository.findById(fosterPersonId)
         .orElseThrow(() -> new ResourceNotFoundException(
             String.format("foster person with id %s not found", fosterPersonId)));
@@ -74,7 +74,7 @@ public class FosterPersonServiceImpl implements FosterPersonService {
 
   }
 
-  private boolean checkFieldsForUpdate(FosterPersonRequest updateRequest, FosterPerson fosterPerson,
+  private boolean checkFieldsForUpdate(PersonDataRequest updateRequest, FosterPerson fosterPerson,
       boolean changes) {
     if (updateRequest.getFirstName() != null && !updateRequest
         .getFirstName().equals(fosterPerson.getFirstName())) {

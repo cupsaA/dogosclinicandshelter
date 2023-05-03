@@ -13,6 +13,15 @@
       <column name="address" value="Aleea X nr 1"></column>
       <column name="phone_number" value="0749333111"></column>
     </insert>
-
+  </changeSet>
+  <changeSet author="alexc" id="1679847547482-6">
+    <insert tableName="adoptive_person">
+      <column name="first_name" value="andrew"></column>
+      <column name="last_name" value="doe"></column>
+      <column name="city" value="Cluj-Napoca"></column>
+      <column name="email" value="andrew@email.com"></column>
+      <column name="address" value="Aleea X nr 2"></column>
+      <column name="phone_number" value="0749333111"></column>
+    </insert>
   </changeSet>
 </databaseChangeLog>

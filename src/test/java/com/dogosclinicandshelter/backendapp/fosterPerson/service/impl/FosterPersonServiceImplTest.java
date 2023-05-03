@@ -2,8 +2,7 @@ package com.dogosclinicandshelter.backendapp.fosterPerson.service.impl;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import com.dogosclinicandshelter.backendapp.exception.DuplicateResourceException;
 import com.dogosclinicandshelter.backendapp.exception.RequestValidationException;
@@ -12,7 +11,7 @@ import com.dogosclinicandshelter.backendapp.fosterPerson.mapper.FosterPersonMapp
 import com.dogosclinicandshelter.backendapp.fosterPerson.model.dto.FosterPersonDto;
 import com.dogosclinicandshelter.backendapp.fosterPerson.model.persistance.FosterPerson;
 import com.dogosclinicandshelter.backendapp.fosterPerson.repository.FosterPersonRepository;
-import com.dogosclinicandshelter.backendapp.fosterPerson.request.FosterPersonRequest;
+import com.dogosclinicandshelter.backendapp.personDataRequest.request.PersonDataRequest;
 import com.dogosclinicandshelter.backendapp.fosterPerson.service.FosterPersonService;
 import java.util.List;
 import java.util.Optional;
@@ -27,8 +26,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class FosterPersonServiceImplTest {
 
 
-  FosterPersonService underTest;
-  FosterPerson fosterPerson;
+  private FosterPersonService underTest;
+  private FosterPerson fosterPerson;
 
   @Mock
   private FosterPersonRepository fosterPersonRepository;
@@ -44,7 +43,7 @@ class FosterPersonServiceImplTest {
   }
 
   @Test
-  void testGetAllFosterPersons() {
+  void getAllFosterPersonsTest() {
     when(fosterPersonRepository.findAll()).thenReturn(List.of(fosterPerson));
     List<FosterPersonDto> allFosterPersons = underTest.getAllFosterPersons();
 
@@ -53,7 +52,7 @@ class FosterPersonServiceImplTest {
   }
 
   @Test
-  void getFosterPersonThrowResourceNotFoundException() {
+  void getFosterPersonThrowResourceNotFoundExceptionTest() {
 
     when(fosterPersonRepository.findById(1L)).thenReturn(Optional.empty());
 
@@ -63,7 +62,7 @@ class FosterPersonServiceImplTest {
   }
 
   @Test
-  void getFosterPerson() {
+  void getFosterPersonTest() {
 
     when(fosterPersonRepository.findById(1L)).thenReturn(Optional.of(fosterPerson));
 
@@ -79,8 +78,8 @@ class FosterPersonServiceImplTest {
   }
 
   @Test
-  void addFosterPersonWithExistingEmail() {
-    FosterPersonRequest request = requestFosterPerson();
+  void addFosterPersonWithExistingEmailTest() {
+    PersonDataRequest request = requestFosterPerson();
 
     when(fosterPersonRepository.existsFosterPersonByEmail(request.getEmail())).thenReturn(true);
 
@@ -89,8 +88,8 @@ class FosterPersonServiceImplTest {
   }
 
   @Test
-  void addFosterPerson() {
-    FosterPersonRequest request = requestFosterPerson();
+  void addFosterPersonTest() {
+    PersonDataRequest request = requestFosterPerson();
 
     when(fosterPersonRepository.existsFosterPersonByEmail(request.getEmail())).thenReturn(false);
 
@@ -110,27 +109,8 @@ class FosterPersonServiceImplTest {
   }
 
   @Test
-  void deleteNonExistentFosterPersonById() {
-
-    when(fosterPersonRepository.existsFosterPersonById(fosterPerson.getId())).thenReturn(false);
-
-    assertThatThrownBy(() -> underTest.deleteFosterPersonById(fosterPerson.getId()))
-        .isInstanceOf(ResourceNotFoundException.class)
-        .hasMessage(String.format("foster person with id %s not found", fosterPerson.getId()));
-  }
-
-  @Test
-  void deleteFosterPersonById() {
-    when(fosterPersonRepository.existsFosterPersonById(fosterPerson.getId())).thenReturn(true);
-
-    underTest.deleteFosterPersonById(fosterPerson.getId());
-
-    verify(fosterPersonRepository).deleteById(fosterPerson.getId());
-  }
-
-  @Test
-  void updateFosterPersonThrowResourceNotFound() {
-    FosterPersonRequest updateReq = new FosterPersonRequest("jonny", "donny", "newEmail",
+  void updateFosterPersonThrowResourceNotFoundTest() {
+    PersonDataRequest updateReq = new PersonDataRequest("jonny", "donny", "newEmail",
         "Brasov", "Street NewStreet 1", "0755223311");
 
     when(fosterPersonRepository.findById(fosterPerson.getId())).thenReturn(Optional.empty());
@@ -141,13 +121,13 @@ class FosterPersonServiceImplTest {
   }
 
   @Test
-  void updateAllFosterPersonProperties() {
+  void updateAllFosterPersonPropertiesTest() {
     when(fosterPersonRepository.findById(fosterPerson.getId())).thenReturn(
         Optional.of(fosterPerson));
 
     String newEmail = "jonny@yahoo.com";
 
-    FosterPersonRequest updateReq = new FosterPersonRequest("jonny", "donny", newEmail,
+    PersonDataRequest updateReq = new PersonDataRequest("jonny", "donny", newEmail,
         "Brasov", "Street NewStreet 1", "0755223311");
 
     when(fosterPersonRepository.existsFosterPersonByEmail(newEmail)).thenReturn(false);
@@ -168,11 +148,11 @@ class FosterPersonServiceImplTest {
   }
 
   @Test
-  void updateFirstNameFosterPerson() {
+  void updateFirstNameFosterPersonTest() {
     when(fosterPersonRepository.findById(fosterPerson.getId())).thenReturn(
         Optional.of(fosterPerson));
 
-    FosterPersonRequest updateReq = new FosterPersonRequest("jonny", null, null,
+    PersonDataRequest updateReq = new PersonDataRequest("jonny", null, null,
         null, null, null);
 
     underTest.updateFosterPerson(fosterPerson.getId(), updateReq);
@@ -192,11 +172,11 @@ class FosterPersonServiceImplTest {
 
 
   @Test
-  void updateLastNameFosterPerson() {
+  void updateLastNameFosterPersonTest() {
     when(fosterPersonRepository.findById(fosterPerson.getId())).thenReturn(
         Optional.of(fosterPerson));
 
-    FosterPersonRequest updateReq = new FosterPersonRequest(null, "donny", null,
+    PersonDataRequest updateReq = new PersonDataRequest(null, "donny", null,
         null, null, null);
 
     underTest.updateFosterPerson(fosterPerson.getId(), updateReq);
@@ -216,11 +196,11 @@ class FosterPersonServiceImplTest {
 
 
   @Test
-  void updateEmailThrowDuplicateResourceNameFosterPerson() {
+  void updateEmailThrowDuplicateResourceNameFosterPersonTest() {
     when(fosterPersonRepository.findById(fosterPerson.getId())).thenReturn(
         Optional.of(fosterPerson));
 
-    FosterPersonRequest updateReq = new FosterPersonRequest(null, null, "newEmail",
+    PersonDataRequest updateReq = new PersonDataRequest(null, null, "newEmail",
         null, null, null);
     when(fosterPersonRepository.existsFosterPersonByEmail("newEmail"))
         .thenReturn(true);
@@ -231,13 +211,13 @@ class FosterPersonServiceImplTest {
   }
 
   @Test
-  void updateEmailNameFosterPerson() {
+  void updateEmailNameFosterPersonTest() {
     when(fosterPersonRepository.findById(fosterPerson.getId())).thenReturn(
         Optional.of(fosterPerson));
 
     String newEmail = "jonny@yahoo.com";
 
-    FosterPersonRequest updateReq = new FosterPersonRequest(null, null, newEmail,
+    PersonDataRequest updateReq = new PersonDataRequest(null, null, newEmail,
         null, null, null);
     when(fosterPersonRepository.existsFosterPersonByEmail(newEmail)).thenReturn(false);
 
@@ -257,11 +237,11 @@ class FosterPersonServiceImplTest {
   }
 
   @Test
-  void updateCityFosterPerson() {
+  void updateCityFosterPersonTest() {
     when(fosterPersonRepository.findById(fosterPerson.getId())).thenReturn(
         Optional.of(fosterPerson));
 
-    FosterPersonRequest updateReq = new FosterPersonRequest(null, null, null,
+    PersonDataRequest updateReq = new PersonDataRequest(null, null, null,
         "Floresti", null, null);
 
     underTest.updateFosterPerson(fosterPerson.getId(), updateReq);
@@ -280,11 +260,11 @@ class FosterPersonServiceImplTest {
   }
 
   @Test
-  void updateStreetFosterPerson() {
+  void updateStreetFosterPersonTest() {
     when(fosterPersonRepository.findById(fosterPerson.getId())).thenReturn(
         Optional.of(fosterPerson));
 
-    FosterPersonRequest updateReq = new FosterPersonRequest(null, null, null,
+    PersonDataRequest updateReq = new PersonDataRequest(null, null, null,
         null, "Street Some Street 9", null);
 
     underTest.updateFosterPerson(fosterPerson.getId(), updateReq);
@@ -303,11 +283,11 @@ class FosterPersonServiceImplTest {
   }
 
   @Test
-  void updatePhoneNumberFosterPerson() {
+  void updatePhoneNumberFosterPersonTest() {
     when(fosterPersonRepository.findById(fosterPerson.getId())).thenReturn(
         Optional.of(fosterPerson));
 
-    FosterPersonRequest updateReq = new FosterPersonRequest(null, null, null,
+    PersonDataRequest updateReq = new PersonDataRequest(null, null, null,
         null, null, "0934223344");
 
     underTest.updateFosterPerson(fosterPerson.getId(), updateReq);
@@ -326,16 +306,35 @@ class FosterPersonServiceImplTest {
   }
 
   @Test
-  void updateWillThrowNoDataChangesFosterPerson() {
+  void updateWillThrowNoDataChangesFosterPersonTest() {
     when(fosterPersonRepository.findById(fosterPerson.getId())).thenReturn(
         Optional.of(fosterPerson));
 
-    FosterPersonRequest updateReq = new FosterPersonRequest(fosterPerson.getFirstName(),
+    PersonDataRequest updateReq = new PersonDataRequest(fosterPerson.getFirstName(),
         fosterPerson.getLastName(), fosterPerson.getEmail(),
         fosterPerson.getCity(), fosterPerson.getAddress(), fosterPerson.getPhoneNumber());
 
     assertThatThrownBy(() -> underTest.updateFosterPerson(fosterPerson.getId(), updateReq))
         .isInstanceOf(RequestValidationException.class).hasMessage("no data changes found");
+  }
+
+  @Test
+  void deleteNonExistentFosterPersonByIdTest() {
+
+    when(fosterPersonRepository.existsFosterPersonById(fosterPerson.getId())).thenReturn(false);
+
+    assertThatThrownBy(() -> underTest.deleteFosterPersonById(fosterPerson.getId()))
+        .isInstanceOf(ResourceNotFoundException.class)
+        .hasMessage(String.format("foster person with id %s not found", fosterPerson.getId()));
+  }
+
+  @Test
+  void deleteFosterPersonByIdTest() {
+    when(fosterPersonRepository.existsFosterPersonById(fosterPerson.getId())).thenReturn(true);
+
+    underTest.deleteFosterPersonById(fosterPerson.getId());
+
+    verify(fosterPersonRepository).deleteById(fosterPerson.getId());
   }
 
 
@@ -351,10 +350,10 @@ class FosterPersonServiceImplTest {
     return fosterPerson;
   }
 
-  private FosterPersonRequest requestFosterPerson() {
-    FosterPersonRequest fosterPersonRequest = new FosterPersonRequest("john", "doe",
+  private PersonDataRequest requestFosterPerson() {
+    PersonDataRequest personDataRequest = new PersonDataRequest("john", "doe",
         "jon@email.com", "Bucuresti", "Random Street", "0749334455");
-    return fosterPersonRequest;
+    return personDataRequest;
   }
 
   private void checkFosterPersonDtoFields(FosterPersonDto fosterPersonDto) {

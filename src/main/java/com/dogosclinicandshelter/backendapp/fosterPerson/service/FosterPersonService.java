@@ -1,7 +1,7 @@
 package com.dogosclinicandshelter.backendapp.fosterPerson.service;
 
 import com.dogosclinicandshelter.backendapp.fosterPerson.model.dto.FosterPersonDto;
-import com.dogosclinicandshelter.backendapp.fosterPerson.request.FosterPersonRequest;
+import com.dogosclinicandshelter.backendapp.personDataRequest.request.PersonDataRequest;
 import java.util.List;
 
 public interface FosterPersonService {
@@ -10,9 +10,9 @@ public interface FosterPersonService {
 
   FosterPersonDto getFosterPerson(Long fosterPersonId);
 
-  boolean addFosterPerson(FosterPersonRequest request);
+  boolean addFosterPerson(PersonDataRequest request);
 
   boolean deleteFosterPersonById(Long fosterPersonId);
 
-  boolean updateFosterPerson(Long fosterPersonId, FosterPersonRequest updateFosterPersonRequest);
+  boolean updateFosterPerson(Long fosterPersonId, PersonDataRequest updateReq);
 }

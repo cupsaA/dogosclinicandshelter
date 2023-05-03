@@ -1,4 +1,4 @@
-package com.dogosclinicandshelter.backendapp.fosterPerson.model.persistance;
+package com.dogosclinicandshelter.backendapp.adoptivePerson.model.persistance;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,9 +18,8 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 @Entity
-@Table(name = "foster_person")
-public class FosterPerson {
-
+@Table(name = "adoptive_person")
+public class AdoptivePerson {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -43,7 +42,7 @@ public class FosterPerson {
   @Column(nullable = false, name = "phone_number")
   private String phoneNumber;
 
-  public FosterPerson(String firstName, String lastName, String email, String city,
+  public AdoptivePerson(String firstName, String lastName, String email, String city,
       String address, String phoneNumber) {
     this.firstName = firstName;
     this.lastName = lastName;

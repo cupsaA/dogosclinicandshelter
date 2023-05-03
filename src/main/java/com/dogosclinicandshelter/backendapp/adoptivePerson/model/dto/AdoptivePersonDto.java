@@ -1,4 +1,4 @@
-package com.dogosclinicandshelter.backendapp.fosterPerson.model.dto;
+package com.dogosclinicandshelter.backendapp.adoptivePerson.model.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,8 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class FosterPersonDto {
-
+public class AdoptivePersonDto {
   private Long id;
 
   private String firstName;
@@ -23,8 +22,8 @@ public class FosterPersonDto {
 
   private String phoneNumber;
 
-  public FosterPersonDto(Long id, String firstName, String lastName, String email, String city,
-      String address, String phoneNumber) {
+  public AdoptivePersonDto(Long id, String firstName, String lastName, String email,
+      String city, String address, String phoneNumber) {
     this.id = id;
     this.firstName = firstName;
     this.lastName = lastName;
@@ -33,5 +32,4 @@ public class FosterPersonDto {
     this.address = address;
     this.phoneNumber = phoneNumber;
   }
-
 }

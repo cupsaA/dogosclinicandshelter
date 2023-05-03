@@ -1,7 +1,7 @@
 package com.dogosclinicandshelter.backendapp.fosterPerson.controller;
 
 import com.dogosclinicandshelter.backendapp.fosterPerson.model.dto.FosterPersonDto;
-import com.dogosclinicandshelter.backendapp.fosterPerson.request.FosterPersonRequest;
+import com.dogosclinicandshelter.backendapp.personDataRequest.request.PersonDataRequest;
 import com.dogosclinicandshelter.backendapp.fosterPerson.service.FosterPersonService;
 import com.dogosclinicandshelter.backendapp.message.MessageUtils;
 import java.util.List;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/v1/fosterperson")
+@RequestMapping("api/v1/foster")
 public class FosterPersonController {
 
   private final FosterPersonService fosterPersonService;
@@ -39,13 +39,13 @@ public class FosterPersonController {
       return new ResponseEntity<>(fosterPersonService.getFosterPerson(fosterPersonId),
           HttpStatus.OK);
     } catch (Exception e) {
-      return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
   }
 
   @PostMapping
   public ResponseEntity<String> registerFosterPerson(
-      @RequestBody FosterPersonRequest request) {
+      @RequestBody PersonDataRequest request) {
     if (fosterPersonService.addFosterPerson(request)) {
       return new ResponseEntity<>(MessageUtils.FOSTER_PERSON_SAVE_DONE.toString(),
           HttpStatus.CREATED);
@@ -58,8 +58,8 @@ public class FosterPersonController {
   @PutMapping("{fosterPersonId}")
   public ResponseEntity<String> updateFosterPerson(
       @PathVariable Long fosterPersonId,
-      @RequestBody FosterPersonRequest updateFosterPersonRequest) {
-    if (fosterPersonService.updateFosterPerson(fosterPersonId, updateFosterPersonRequest)) {
+      @RequestBody PersonDataRequest updatePersonDataRequest) {
+    if (fosterPersonService.updateFosterPerson(fosterPersonId, updatePersonDataRequest)) {
       return new ResponseEntity<>(MessageUtils.FOSTER_PERSON_UPDATE_DONE.toString(), HttpStatus.OK);
     } else {
       return new ResponseEntity<>(MessageUtils.FOSTER_PERSON_UPDATE_FAILED.toString(),

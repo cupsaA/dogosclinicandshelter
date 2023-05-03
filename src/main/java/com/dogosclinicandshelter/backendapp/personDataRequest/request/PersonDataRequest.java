@@ -1,11 +1,11 @@
-package com.dogosclinicandshelter.backendapp.fosterPerson.request;
+package com.dogosclinicandshelter.backendapp.personDataRequest.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class FosterPersonRequest {
+public class PersonDataRequest {
   private String firstName;
 
   private String lastName;
