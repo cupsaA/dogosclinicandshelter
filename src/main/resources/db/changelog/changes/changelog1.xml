@@ -11,31 +11,34 @@
       </not>
     </preConditions>
     <createTable tableName="dog">
-      <column name="dog_id" type="BIGINT">
+      <column autoIncrement="true" name="dog_id" type="BIGINT">
         <constraints nullable="false" primaryKey="true"/>
       </column>
-      <column name="adoption_status" type="INT"/>
-      <column name="dog_age" type="INT">
+      <column name="name" type="VARCHAR(255)"/>
+      <column name="size" type="VARCHAR(255)"/>
+      <column name="sex" type="CHAR(1)">
         <constraints nullable="false"/>
       </column>
-      <column name="dog_breed" type="VARCHAR(255)"/>
-      <column name="dog_chipped" type="BIT(1)">
+      <column name="age" type="INT">
         <constraints nullable="false"/>
       </column>
-      <column name="dog_dewormed" type="BIT(1)">
+      <column name="breed" type="VARCHAR(255)"/>
+      <column name="chipped" type="BIT(1)">
         <constraints nullable="false"/>
       </column>
-      <column name="dog_name" type="VARCHAR(255)"/>
-      <column name="dog_sex" type="CHAR(1)">
+      <column name="spayed" type="BIT(1)">
         <constraints nullable="false"/>
       </column>
-      <column name="dog_size" type="INT"/>
-      <column name="dog_spayed" type="BIT(1)">
+
+      <column name="vaccinated" type="BIT(1)">
         <constraints nullable="false"/>
       </column>
-      <column name="dog_vaccinated" type="BIT(1)">
+      <column name="dewormed" type="BIT(1)">
         <constraints nullable="false"/>
       </column>
+
+      <column name="adoption_status" type="VARCHAR(255)"/>
+
       <column name="entry_date_time" type="datetime"/>
     </createTable>
   </changeSet>
