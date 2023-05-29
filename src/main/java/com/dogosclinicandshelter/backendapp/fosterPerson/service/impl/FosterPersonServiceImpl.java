@@ -7,8 +7,10 @@ import com.dogosclinicandshelter.backendapp.fosterPerson.mapper.FosterPersonMapp
 import com.dogosclinicandshelter.backendapp.fosterPerson.model.dto.FosterPersonDto;
 import com.dogosclinicandshelter.backendapp.fosterPerson.model.persistance.FosterPerson;
 import com.dogosclinicandshelter.backendapp.fosterPerson.repository.FosterPersonRepository;
-import com.dogosclinicandshelter.backendapp.personDataRequest.request.PersonDataRequest;
+import com.dogosclinicandshelter.backendapp.dataRequest.personRequest.PersonDataRequest;
 import com.dogosclinicandshelter.backendapp.fosterPerson.service.FosterPersonService;
+import com.dogosclinicandshelter.backendapp.message.ExceptionUtils;
+import com.dogosclinicandshelter.backendapp.message.MessageUtils;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -34,13 +36,13 @@ public class FosterPersonServiceImpl implements FosterPersonService {
     return fosterPersonRepository.findById(fosterPersonId)
         .map(fosterPersonMapper::mapToDto)
         .orElseThrow(() -> new ResourceNotFoundException(
-            String.format("foster person with id %s not found", fosterPersonId)));
+            String.format(MessageUtils.FOSTER_PERSON_WITH_ID_S_NOT_FOUND.toString(), fosterPersonId)));
   }
 
   @Override
   public boolean addFosterPerson(PersonDataRequest request) {
     if (fosterPersonRepository.existsFosterPersonByEmail(request.getEmail())) {
-      throw new DuplicateResourceException("email already taken");
+      throw new DuplicateResourceException(ExceptionUtils.EMAIL_ALREADY_TAKEN.toString());
     }
     FosterPerson fosterPerson = new FosterPerson(request.getFirstName(), request.getLastName(),
         request.getEmail(), request.getCity(), request.getAddress(), request.getPhoneNumber());
@@ -52,7 +54,7 @@ public class FosterPersonServiceImpl implements FosterPersonService {
   public boolean deleteFosterPersonById(Long fosterPersonId) {
     if (!fosterPersonRepository.existsFosterPersonById(fosterPersonId)) {
       throw new ResourceNotFoundException(
-          String.format("foster person with id %s not found", fosterPersonId));
+          String.format(MessageUtils.FOSTER_PERSON_WITH_ID_S_NOT_FOUND.toString(), fosterPersonId));
     }
     fosterPersonRepository.deleteById(fosterPersonId);
     return true;
@@ -63,7 +65,7 @@ public class FosterPersonServiceImpl implements FosterPersonService {
       PersonDataRequest updateRequest) {
     FosterPerson fosterPerson = fosterPersonRepository.findById(fosterPersonId)
         .orElseThrow(() -> new ResourceNotFoundException(
-            String.format("foster person with id %s not found", fosterPersonId)));
+            String.format(MessageUtils.FOSTER_PERSON_WITH_ID_S_NOT_FOUND.toString(), fosterPersonId)));
 
     boolean changes = false;
 
@@ -90,7 +92,7 @@ public class FosterPersonServiceImpl implements FosterPersonService {
     if (updateRequest.getEmail() != null && !updateRequest.getEmail()
         .equals(fosterPerson.getEmail())) {
       if (fosterPersonRepository.existsFosterPersonByEmail(updateRequest.getEmail())) {
-        throw new DuplicateResourceException("email already taken");
+          throw new DuplicateResourceException(ExceptionUtils.EMAIL_ALREADY_TAKEN.toString());
       }
       fosterPerson.setEmail(updateRequest.getEmail());
       changes = true;
@@ -113,7 +115,7 @@ public class FosterPersonServiceImpl implements FosterPersonService {
     }
 
     if (!changes) {
-      throw new RequestValidationException("no data changes found");
+      throw new RequestValidationException(ExceptionUtils.NO_DATA_CHANGES_FOUND.toString());
     }
 
     return changes;

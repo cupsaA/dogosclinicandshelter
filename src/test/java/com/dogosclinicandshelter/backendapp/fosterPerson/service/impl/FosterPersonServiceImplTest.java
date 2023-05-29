@@ -11,8 +11,9 @@ import com.dogosclinicandshelter.backendapp.fosterPerson.mapper.FosterPersonMapp
 import com.dogosclinicandshelter.backendapp.fosterPerson.model.dto.FosterPersonDto;
 import com.dogosclinicandshelter.backendapp.fosterPerson.model.persistance.FosterPerson;
 import com.dogosclinicandshelter.backendapp.fosterPerson.repository.FosterPersonRepository;
-import com.dogosclinicandshelter.backendapp.personDataRequest.request.PersonDataRequest;
+import com.dogosclinicandshelter.backendapp.dataRequest.personRequest.PersonDataRequest;
 import com.dogosclinicandshelter.backendapp.fosterPerson.service.FosterPersonService;
+import com.dogosclinicandshelter.backendapp.message.ExceptionUtils;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -84,7 +85,7 @@ class FosterPersonServiceImplTest {
     when(fosterPersonRepository.existsFosterPersonByEmail(request.getEmail())).thenReturn(true);
 
     assertThatThrownBy(() -> underTest.addFosterPerson(request))
-        .isInstanceOf(DuplicateResourceException.class).hasMessage("email already taken");
+        .isInstanceOf(DuplicateResourceException.class).hasMessage(ExceptionUtils.EMAIL_ALREADY_TAKEN.toString());
   }
 
   @Test
@@ -207,7 +208,7 @@ class FosterPersonServiceImplTest {
 
     assertThatThrownBy(() -> underTest.updateFosterPerson(fosterPerson.getId(), updateReq))
         .isInstanceOf(DuplicateResourceException.class)
-        .hasMessage("email already taken");
+        .hasMessage(ExceptionUtils.EMAIL_ALREADY_TAKEN.toString());
   }
 
   @Test
@@ -315,7 +316,7 @@ class FosterPersonServiceImplTest {
         fosterPerson.getCity(), fosterPerson.getAddress(), fosterPerson.getPhoneNumber());
 
     assertThatThrownBy(() -> underTest.updateFosterPerson(fosterPerson.getId(), updateReq))
-        .isInstanceOf(RequestValidationException.class).hasMessage("no data changes found");
+        .isInstanceOf(RequestValidationException.class).hasMessage(ExceptionUtils.NO_DATA_CHANGES_FOUND.toString());
   }
 
   @Test

@@ -26,18 +26,21 @@
   </changeSet>
 
   <changeSet author="alexc" id="1679847547482-11">
-    <insert tableName="dog">
+    <insert tableName="dog_info">
       <column name="name" value="rexy"></column>
       <column name="size" value="S"></column>
       <column name="sex" value="M"></column>
       <column name="age" value="1"></column>
       <column name="breed" value="Shih-tzu"></column>
       <column name="chipped" valueBoolean="true"></column>
+    </insert>
+  </changeSet>
+
+  <changeSet author="alexc" id="1679847547482-12">
+    <insert tableName="dog_health">
       <column name="spayed" valueBoolean="false"></column>
-      <column name="vaccinated" valueBoolean="true"></column>
-      <column name="dewormed" valueBoolean="true"></column>
-      <column name="adoption_status" value="NOT_READY_FOR_ADOPTION"></column>
-      <column name="entry_date_time" valueDate="now()"></column>
+      <column name="vaccinated" valueBoolean="false"></column>
+      <column name="dewormed" valueBoolean="false"></column>
     </insert>
   </changeSet>
 

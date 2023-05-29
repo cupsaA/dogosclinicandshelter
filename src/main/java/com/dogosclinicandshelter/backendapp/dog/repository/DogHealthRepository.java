@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface DogHealthRepository extends JpaRepository<DogHealth, Long> {
 
+  boolean existsDogHealthByDogHealthId(Long dogHealthId);
 }

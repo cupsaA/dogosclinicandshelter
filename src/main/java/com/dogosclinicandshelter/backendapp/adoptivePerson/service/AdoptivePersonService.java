@@ -1,7 +1,7 @@
 package com.dogosclinicandshelter.backendapp.adoptivePerson.service;
 
 import com.dogosclinicandshelter.backendapp.adoptivePerson.model.dto.AdoptivePersonDto;
-import com.dogosclinicandshelter.backendapp.personDataRequest.request.PersonDataRequest;
+import com.dogosclinicandshelter.backendapp.dataRequest.personRequest.PersonDataRequest;
 import java.util.List;
 
 public interface AdoptivePersonService {

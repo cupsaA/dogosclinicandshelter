@@ -10,6 +10,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class DogInfoDto {
 
+  private Long id;
+
   private String dogName;
 
   private DogSize dogSize;
@@ -22,8 +24,9 @@ public class DogInfoDto {
 
   private boolean dogChipped;
 
-  public DogInfoDto(String dogName,
+  public DogInfoDto(Long id, String dogName,
       DogSize dogSize, char dogSex, int dogAge, String dogBreed, boolean dogChipped) {
+    this.id = id;
     this.dogName = dogName;
     this.dogSize = dogSize;
     this.dogSex = dogSex;

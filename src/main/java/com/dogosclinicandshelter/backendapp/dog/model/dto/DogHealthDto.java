@@ -9,13 +9,16 @@ import lombok.Setter;
 @NoArgsConstructor
 public class DogHealthDto {
 
+  private Long id;
+
   private boolean dogSpayed;
 
   private boolean dogVaccinated;
 
   private boolean dogDewormed;
 
-  public DogHealthDto(boolean dogSpayed, boolean dogVaccinated, boolean dogDewormed) {
+  public DogHealthDto(Long id, boolean dogSpayed, boolean dogVaccinated, boolean dogDewormed) {
+    this.id = id;
     this.dogSpayed = dogSpayed;
     this.dogVaccinated = dogVaccinated;
     this.dogDewormed = dogDewormed;

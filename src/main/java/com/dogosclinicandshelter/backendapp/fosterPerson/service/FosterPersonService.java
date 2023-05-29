@@ -1,7 +1,7 @@
 package com.dogosclinicandshelter.backendapp.fosterPerson.service;
 
 import com.dogosclinicandshelter.backendapp.fosterPerson.model.dto.FosterPersonDto;
-import com.dogosclinicandshelter.backendapp.personDataRequest.request.PersonDataRequest;
+import com.dogosclinicandshelter.backendapp.dataRequest.personRequest.PersonDataRequest;
 import java.util.List;
 
 public interface FosterPersonService {

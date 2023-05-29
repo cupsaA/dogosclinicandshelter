@@ -2,6 +2,7 @@ package com.dogosclinicandshelter.backendapp.adoptivePerson.service.impl;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -13,7 +14,8 @@ import com.dogosclinicandshelter.backendapp.adoptivePerson.service.AdoptivePerso
 import com.dogosclinicandshelter.backendapp.exception.DuplicateResourceException;
 import com.dogosclinicandshelter.backendapp.exception.RequestValidationException;
 import com.dogosclinicandshelter.backendapp.exception.ResourceNotFoundException;
-import com.dogosclinicandshelter.backendapp.personDataRequest.request.PersonDataRequest;
+import com.dogosclinicandshelter.backendapp.dataRequest.personRequest.PersonDataRequest;
+import com.dogosclinicandshelter.backendapp.message.ExceptionUtils;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,15 +37,18 @@ class AdoptivePersonServiceImplTest {
   @Mock
   private AdoptivePersonMapper adoptivePersonMapper;
 
+  Long adoptivePersonId;
+
   @BeforeEach
   void setup() {
     underTest = new AdoptivePersonServiceImpl(adoptivePersonRepository, adoptivePersonMapper);
     adoptivePerson = this.buildAdoptivePerson();
+    adoptivePersonId = adoptivePerson.getId();
   }
 
 
   @Test
-  void testGetAllAdoptivePersons() {
+  void getAllAdoptivePersonsTest() {
     when(adoptivePersonRepository.findAll()).thenReturn(List.of(adoptivePerson));
     List<AdoptivePersonDto> allAdoptivePersons = underTest.getAllAdoptivePersons();
 
@@ -69,7 +74,7 @@ class AdoptivePersonServiceImplTest {
   void getAdoptivePersonThrowResourceNotFoundExceptionTest() {
     when(adoptivePersonRepository.findById(1L)).thenReturn(Optional.empty());
 
-    assertThatThrownBy(() -> underTest.getAdoptivePerson(adoptivePerson.getId()))
+    assertThatThrownBy(() -> underTest.getAdoptivePerson(adoptivePersonId))
         .isInstanceOf(ResourceNotFoundException.class)
         .hasMessage(String.format("adoptive person with id %s not found", adoptivePerson.getId()));
   }
@@ -86,7 +91,7 @@ class AdoptivePersonServiceImplTest {
     verify(adoptivePersonRepository).save(adoptivePersonArgumentCaptor.capture());
     AdoptivePerson capturedAdoptivePerson = adoptivePersonArgumentCaptor.getValue();
 
-    assertEquals(null, capturedAdoptivePerson.getId());
+    assertNull(capturedAdoptivePerson.getId());
     assertEquals("john", capturedAdoptivePerson.getFirstName());
     assertEquals("doe", capturedAdoptivePerson.getLastName());
     assertEquals("jon@email.com", capturedAdoptivePerson.getEmail());
@@ -102,7 +107,7 @@ class AdoptivePersonServiceImplTest {
     when(adoptivePersonRepository.existsAdoptivePersonByEmail(request.getEmail())).thenReturn(true);
 
     assertThatThrownBy(() -> underTest.addAdoptivePerson(request))
-        .isInstanceOf(DuplicateResourceException.class).hasMessage("email already taken");
+        .isInstanceOf(DuplicateResourceException.class).hasMessage(ExceptionUtils.EMAIL_ALREADY_TAKEN.toString());
   }
 
   @Test
@@ -112,7 +117,7 @@ class AdoptivePersonServiceImplTest {
 
     when(adoptivePersonRepository.findById(adoptivePerson.getId())).thenReturn(Optional.empty());
 
-    assertThatThrownBy(() -> underTest.updateAdoptivePerson(adoptivePerson.getId(), updateReq))
+    assertThatThrownBy(() -> underTest.updateAdoptivePerson(adoptivePersonId, updateReq))
         .isInstanceOf(ResourceNotFoundException.class)
         .hasMessage(String.format("adoptive person with id %s not found", adoptivePerson.getId()));
   }
@@ -202,9 +207,9 @@ class AdoptivePersonServiceImplTest {
     when(adoptivePersonRepository.existsAdoptivePersonByEmail("newEmail"))
         .thenReturn(true);
 
-    assertThatThrownBy(() -> underTest.updateAdoptivePerson(adoptivePerson.getId(), updateReq))
+    assertThatThrownBy(() -> underTest.updateAdoptivePerson(adoptivePersonId, updateReq))
         .isInstanceOf(DuplicateResourceException.class)
-        .hasMessage("email already taken");
+        .hasMessage(ExceptionUtils.EMAIL_ALREADY_TAKEN.toString());
   }
 
   @Test
@@ -311,8 +316,8 @@ class AdoptivePersonServiceImplTest {
         adoptivePerson.getLastName(), adoptivePerson.getEmail(),
         adoptivePerson.getCity(), adoptivePerson.getAddress(), adoptivePerson.getPhoneNumber());
 
-    assertThatThrownBy(() -> underTest.updateAdoptivePerson(adoptivePerson.getId(), updateReq))
-        .isInstanceOf(RequestValidationException.class).hasMessage("no data changes found");
+    assertThatThrownBy(() -> underTest.updateAdoptivePerson(adoptivePersonId, updateReq))
+        .isInstanceOf(RequestValidationException.class).hasMessage(ExceptionUtils.NO_DATA_CHANGES_FOUND.toString());
   }
 
 
@@ -332,7 +337,7 @@ class AdoptivePersonServiceImplTest {
     when(adoptivePersonRepository.existsAdoptivePersonById(adoptivePerson.getId()))
         .thenReturn(false);
 
-    assertThatThrownBy(() -> underTest.deleteAdoptivePersonById(adoptivePerson.getId()))
+    assertThatThrownBy(() -> underTest.deleteAdoptivePersonById(adoptivePersonId))
         .isInstanceOf(ResourceNotFoundException.class)
         .hasMessage(String.format("adoptive person with id %s not found", adoptivePerson.getId()));
   }

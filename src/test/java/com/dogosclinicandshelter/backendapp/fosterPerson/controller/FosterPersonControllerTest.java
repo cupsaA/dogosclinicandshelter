@@ -11,7 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.dogosclinicandshelter.backendapp.exception.ResourceNotFoundException;
 import com.dogosclinicandshelter.backendapp.fosterPerson.model.dto.FosterPersonDto;
-import com.dogosclinicandshelter.backendapp.personDataRequest.request.PersonDataRequest;
+import com.dogosclinicandshelter.backendapp.dataRequest.personRequest.PersonDataRequest;
 import com.dogosclinicandshelter.backendapp.fosterPerson.service.FosterPersonService;
 import com.dogosclinicandshelter.backendapp.message.MessageUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;

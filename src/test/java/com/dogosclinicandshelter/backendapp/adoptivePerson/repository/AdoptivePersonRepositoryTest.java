@@ -71,7 +71,7 @@ class AdoptivePersonRepositoryTest {
   }
 
   private AdoptivePerson createAdoptivePerson() {
-    return adoptivePerson = new AdoptivePerson("janet", "doe", "janetdoe@gmail.com", "Brasov",
+    return new AdoptivePerson("janet", "doe", "janetdoe@gmail.com", "Brasov",
         "Street ABC Nr 22", "0744123123");
   }
 

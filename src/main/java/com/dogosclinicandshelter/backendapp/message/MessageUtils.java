@@ -13,7 +13,11 @@ public enum MessageUtils {
   ADOPTIVE_PERSON_DELETE_DONE("Adoptive Person delete done"),
   ADOPTIVE_PERSON_DELETE_FAILED("Adoptive Person delete failed"),
   ADOPTIVE_PERSON_SAVE_DONE("Adoptive Person save done"),
-  ADOPTIVE_PERSON_SAVE_FAILED("Adoptive Person save failed");
+  ADOPTIVE_PERSON_SAVE_FAILED("Adoptive Person save failed"),
+  ADOPTIVE_PERSON_WITH_ID_S_NOT_FOUND("adoptive person with id %s not found"),
+  DOG_INFO_WITH_ID_S_NOT_FOUND("dog info with id %s not found"),
+  DOG_HEALTH_WITH_ID_S_NOT_FOUND("dog health with id %s not found"),
+  FOSTER_PERSON_WITH_ID_S_NOT_FOUND ("foster person with id %s not found");
   private final String message;
 
 

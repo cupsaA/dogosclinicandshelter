@@ -1,4 +1,4 @@
-package com.dogosclinicandshelter.backendapp.personDataRequest.request;
+package com.dogosclinicandshelter.backendapp.dataRequest.personRequest;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

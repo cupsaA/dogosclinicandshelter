@@ -8,7 +8,9 @@ import com.dogosclinicandshelter.backendapp.adoptivePerson.service.AdoptivePerso
 import com.dogosclinicandshelter.backendapp.exception.DuplicateResourceException;
 import com.dogosclinicandshelter.backendapp.exception.RequestValidationException;
 import com.dogosclinicandshelter.backendapp.exception.ResourceNotFoundException;
-import com.dogosclinicandshelter.backendapp.personDataRequest.request.PersonDataRequest;
+import com.dogosclinicandshelter.backendapp.dataRequest.personRequest.PersonDataRequest;
+import com.dogosclinicandshelter.backendapp.message.ExceptionUtils;
+import com.dogosclinicandshelter.backendapp.message.MessageUtils;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -32,23 +34,14 @@ public class AdoptivePersonServiceImpl implements AdoptivePersonService {
   public AdoptivePersonDto getAdoptivePerson(long adoptivePersonId) {
     return adoptivePersonRepository.findById(adoptivePersonId).map(adoptivePersonMapper::mapToDto)
         .orElseThrow(() -> new ResourceNotFoundException(
-            String.format("adoptive person with id %s not found", adoptivePersonId)));
+            String.format(MessageUtils.ADOPTIVE_PERSON_WITH_ID_S_NOT_FOUND.toString(), adoptivePersonId)));
   }
 
-  @Override
-  public boolean deleteAdoptivePersonById(Long adoptivePersonId) {
-    if (!adoptivePersonRepository.existsAdoptivePersonById(adoptivePersonId)) {
-      throw new ResourceNotFoundException(
-          String.format("adoptive person with id %s not found", adoptivePersonId));
-    }
-    adoptivePersonRepository.deleteById(adoptivePersonId);
-    return true;
-  }
 
   @Override
   public boolean addAdoptivePerson(PersonDataRequest request) {
     if (adoptivePersonRepository.existsAdoptivePersonByEmail(request.getEmail())) {
-      throw new DuplicateResourceException("email already taken");
+      throw new DuplicateResourceException(ExceptionUtils.EMAIL_ALREADY_TAKEN.toString());
     }
 
     AdoptivePerson adoptivePerson = new AdoptivePerson(request.getFirstName(),
@@ -62,7 +55,7 @@ public class AdoptivePersonServiceImpl implements AdoptivePersonService {
   public boolean updateAdoptivePerson(Long adoptivePersonId, PersonDataRequest updateReq) {
     AdoptivePerson adoptivePerson = adoptivePersonRepository.findById(adoptivePersonId)
         .orElseThrow(() -> new ResourceNotFoundException(
-            String.format("adoptive person with id %s not found", adoptivePersonId)));
+            String.format(MessageUtils.ADOPTIVE_PERSON_WITH_ID_S_NOT_FOUND.toString(), adoptivePersonId)));
 
     boolean changes = false;
 
@@ -71,6 +64,16 @@ public class AdoptivePersonServiceImpl implements AdoptivePersonService {
     adoptivePersonRepository.save(adoptivePerson);
 
     return changes;
+  }
+
+  @Override
+  public boolean deleteAdoptivePersonById(Long adoptivePersonId) {
+    if (!adoptivePersonRepository.existsAdoptivePersonById(adoptivePersonId)) {
+      throw new ResourceNotFoundException(
+          String.format(MessageUtils.ADOPTIVE_PERSON_WITH_ID_S_NOT_FOUND.toString(), adoptivePersonId));
+    }
+    adoptivePersonRepository.deleteById(adoptivePersonId);
+    return true;
   }
 
   private boolean checkFieldsForUpdate(PersonDataRequest updateRequest, AdoptivePerson adoptivePerson,
@@ -89,7 +92,7 @@ public class AdoptivePersonServiceImpl implements AdoptivePersonService {
     if (updateRequest.getEmail() != null && !updateRequest.getEmail()
         .equals(adoptivePerson.getEmail())) {
       if (adoptivePersonRepository.existsAdoptivePersonByEmail(updateRequest.getEmail())) {
-        throw new DuplicateResourceException("email already taken");
+        throw new DuplicateResourceException(ExceptionUtils.EMAIL_ALREADY_TAKEN.toString());
       }
       adoptivePerson.setEmail(updateRequest.getEmail());
       changes = true;
@@ -112,7 +115,7 @@ public class AdoptivePersonServiceImpl implements AdoptivePersonService {
     }
 
     if (!changes) {
-      throw new RequestValidationException("no data changes found");
+      throw new RequestValidationException(ExceptionUtils.NO_DATA_CHANGES_FOUND.toString());
     }
 
     return changes;

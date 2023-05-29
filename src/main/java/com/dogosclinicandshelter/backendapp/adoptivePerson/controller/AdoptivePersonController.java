@@ -3,7 +3,7 @@ package com.dogosclinicandshelter.backendapp.adoptivePerson.controller;
 import com.dogosclinicandshelter.backendapp.adoptivePerson.model.dto.AdoptivePersonDto;
 import com.dogosclinicandshelter.backendapp.adoptivePerson.service.AdoptivePersonService;
 import com.dogosclinicandshelter.backendapp.message.MessageUtils;
-import com.dogosclinicandshelter.backendapp.personDataRequest.request.PersonDataRequest;
+import com.dogosclinicandshelter.backendapp.dataRequest.personRequest.PersonDataRequest;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

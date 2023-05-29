@@ -2,6 +2,9 @@ package com.dogosclinicandshelter.backendapp.dog.model.persistance;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -17,6 +20,10 @@ import lombok.ToString;
 @Entity
 @Table(name = "dog_health")
 public class DogHealth {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long dogHealthId;
 
   @Column(nullable = false, name = "spayed")
   private boolean dogSpayed;

@@ -14,7 +14,7 @@ import com.dogosclinicandshelter.backendapp.adoptivePerson.model.dto.AdoptivePer
 import com.dogosclinicandshelter.backendapp.adoptivePerson.service.AdoptivePersonService;
 import com.dogosclinicandshelter.backendapp.exception.ResourceNotFoundException;
 import com.dogosclinicandshelter.backendapp.message.MessageUtils;
-import com.dogosclinicandshelter.backendapp.personDataRequest.request.PersonDataRequest;
+import com.dogosclinicandshelter.backendapp.dataRequest.personRequest.PersonDataRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;

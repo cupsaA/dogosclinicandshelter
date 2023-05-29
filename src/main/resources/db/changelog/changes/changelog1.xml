@@ -4,26 +4,26 @@
   xmlns:pro="http://www.liquibase.org/xml/ns/pro"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.10.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
-  <changeSet author="alexc" id="1679847547453-1">
-    <preConditions onFail="MARK_RAN">
-      <not>
-        <tableExists tableName="dog"/>
-      </not>
-    </preConditions>
-    <createTable tableName="dog">
-      <column autoIncrement="true" name="dog_id" type="BIGINT">
-        <constraints nullable="false" primaryKey="true"/>
-      </column>
+<!--  <changeSet author="alexc" id="1679847547453-1">-->
+<!--    <preConditions onFail="MARK_RAN">-->
+<!--      <not>-->
+<!--        <tableExists tableName="dog"/>-->
+<!--      </not>-->
+<!--    </preConditions>-->
+<!--    <createTable tableName="dog">-->
+<!--      <column autoIncrement="true" name="dog_id" type="BIGINT">-->
+<!--        <constraints nullable="false" primaryKey="true"/>-->
+<!--      </column>-->
 
-      <column name="info" type="VARCHAR(255)"/>
+<!--      <column name="info" type="VARCHAR(255)"/>-->
 
-      <column name="health" type="VARCHAR(255)"/>
+<!--      <column name="health" type="VARCHAR(255)"/>-->
 
-      <column name="adoption_status" type="VARCHAR(255)"/>
+<!--      <column name="adoption_status" type="VARCHAR(255)"/>-->
 
-      <column name="entry_date_time" type="datetime"/>
-    </createTable>
-  </changeSet>
+<!--      <column name="entry_date_time" type="datetime"/>-->
+<!--    </createTable>-->
+<!--  </changeSet>-->
 
   <changeSet author="alexc" id="1679847547453-2">
     <preConditions onFail="MARK_RAN">
@@ -32,6 +32,9 @@
       </not>
     </preConditions>
     <createTable tableName="dog_info">
+      <column autoIncrement="true" name="dog_info_id" type="BIGINT">
+        <constraints nullable="false" primaryKey="true"/>
+      </column>
       <column name="name" type="VARCHAR(255)"/>
       <column name="size" type="VARCHAR(255)"/>
       <column name="sex" type="CHAR(1)">
@@ -54,6 +57,9 @@
       </not>
     </preConditions>
     <createTable tableName="dog_health">
+      <column autoIncrement="true" name="dog_health_id" type="BIGINT">
+        <constraints nullable="false" primaryKey="true"/>
+      </column>
       <column name="spayed" type="BIT(1)">
         <constraints nullable="false"/>
       </column>
@@ -64,7 +70,6 @@
       <column name="dewormed" type="BIT(1)">
         <constraints nullable="false"/>
       </column>
-
     </createTable>
   </changeSet>
 

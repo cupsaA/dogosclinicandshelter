@@ -5,6 +5,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -20,6 +23,11 @@ import lombok.ToString;
 @Entity
 @Table(name = "dog_info")
 public class DogInfo {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long dogInfoId;
+
   @Column(nullable = false, name = "name")
   private String dogName;
 
