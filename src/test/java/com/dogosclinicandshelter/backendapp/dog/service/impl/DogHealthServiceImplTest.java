@@ -29,6 +29,7 @@ class DogHealthServiceImplTest {
 
   private DogHealthService underTest;
   private DogHealth dogHealth;
+  private Long id;
 
 
   @Mock
@@ -41,6 +42,7 @@ class DogHealthServiceImplTest {
   void setup() {
     underTest = new DogHealthServiceImpl(dogHealthRepository, dogHealthMapper);
     dogHealth = this.buildDogHealth();
+    id = dogHealth.getDogHealthId();
   }
 
   @Test
@@ -71,7 +73,7 @@ class DogHealthServiceImplTest {
   @Test
   void getDogHealthThrowResourceNotFoundExceptionTest() {
     when(dogHealthRepository.findById(1L)).thenReturn(Optional.empty());
-    assertThatThrownBy(() -> underTest.getDogHealth(dogHealth.getDogHealthId()))
+    assertThatThrownBy(() -> underTest.getDogHealth(id))
         .isInstanceOf(ResourceNotFoundException.class)
         .hasMessage(
             String.format("dog health for id %s was not found", dogHealth.getDogHealthId()));
@@ -99,7 +101,7 @@ class DogHealthServiceImplTest {
     DogHealthRequest updateReq = new DogHealthRequest(false, false, false);
 
     when(dogHealthRepository.findById(dogHealth.getDogHealthId())).thenReturn(Optional.empty());
-    assertThatThrownBy(() -> underTest.updateDogHealth(dogHealth.getDogHealthId(), updateReq))
+    assertThatThrownBy(() -> underTest.updateDogHealth(id, updateReq))
         .isInstanceOf(ResourceNotFoundException.class)
         .hasMessage(String.format("dog health with id %s not found", dogHealth.getDogHealthId()));
   }
@@ -133,7 +135,7 @@ class DogHealthServiceImplTest {
     when(dogHealthRepository.existsDogHealthByDogHealthId(dogHealth.getDogHealthId()))
         .thenReturn(false);
 
-    assertThatThrownBy(() -> underTest.deleteDogHealthById(dogHealth.getDogHealthId()))
+    assertThatThrownBy(() -> underTest.deleteDogHealthById(id))
         .isInstanceOf(ResourceNotFoundException.class)
         .hasMessage(
             String.format("dog health for id %s was not found", dogHealth.getDogHealthId()));

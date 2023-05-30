@@ -32,6 +32,7 @@ class DogInfoServiceImplTest {
 
   private DogInfoService underTest;
   private DogInfo dogInfo;
+  private Long id;
 
 
   @Mock
@@ -45,6 +46,7 @@ class DogInfoServiceImplTest {
   void setup() {
     underTest = new DogInfoServiceImpl(dogInfoRepository, dogInfoMapper);
     dogInfo = this.buildDogInfo();
+    id = dogInfo.getDogInfoId();
   }
 
   @Test
@@ -79,7 +81,7 @@ class DogInfoServiceImplTest {
   void getDogInfoThrowResourceNotFoundExceptionTest() {
     when(dogInfoRepository.findById(1L)).thenReturn(Optional.empty());
 
-    assertThatThrownBy(() -> underTest.getDogInfo(dogInfo.getDogInfoId()))
+    assertThatThrownBy(() -> underTest.getDogInfo(id))
         .isInstanceOf(ResourceNotFoundException.class)
         .hasMessage(
             String.format("dog information for id %s was not found", dogInfo.getDogInfoId()));
@@ -109,7 +111,7 @@ class DogInfoServiceImplTest {
     DogInfoRequest updateReq = new DogInfoRequest("rocky", DogSize.S, 'M', 8, "bichon", true);
 
     when(dogInfoRepository.findById(dogInfo.getDogInfoId())).thenReturn(Optional.empty());
-    assertThatThrownBy(() -> underTest.updateDogInfo(dogInfo.getDogInfoId(), updateReq))
+    assertThatThrownBy(() -> underTest.updateDogInfo(id, updateReq))
         .isInstanceOf(ResourceNotFoundException.class)
         .hasMessage(String.format("dog info with id %s not found", dogInfo.getDogInfoId()));
   }
@@ -263,7 +265,7 @@ class DogInfoServiceImplTest {
         dogInfo.getDogSize(), dogInfo.getDogSex(),
         dogInfo.getDogAge(), dogInfo.getDogBreed(), dogInfo.isDogChipped());
 
-    assertThatThrownBy(() -> underTest.updateDogInfo(dogInfo.getDogInfoId(), updateReq))
+    assertThatThrownBy(() -> underTest.updateDogInfo(id, updateReq))
         .isInstanceOf(RequestValidationException.class).hasMessage(ExceptionUtils.NO_DATA_CHANGES_FOUND.toString());
   }
 
@@ -282,7 +284,7 @@ class DogInfoServiceImplTest {
     when(dogInfoRepository.existsDogInfoByDogInfoId(dogInfo.getDogInfoId()))
         .thenReturn(false);
 
-    assertThatThrownBy(() -> underTest.deleteDogInfoById(dogInfo.getDogInfoId()))
+    assertThatThrownBy(() -> underTest.deleteDogInfoById(id))
         .isInstanceOf(ResourceNotFoundException.class)
         .hasMessage(
             String.format("dog information for id %s was not found", dogInfo.getDogInfoId()));

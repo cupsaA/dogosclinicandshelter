@@ -29,6 +29,7 @@ class FosterPersonServiceImplTest {
 
   private FosterPersonService underTest;
   private FosterPerson fosterPerson;
+  private Long id;
 
   @Mock
   private FosterPersonRepository fosterPersonRepository;
@@ -41,6 +42,7 @@ class FosterPersonServiceImplTest {
   void setup() {
     underTest = new FosterPersonServiceImpl(fosterPersonRepository, fosterPersonMapper);
     fosterPerson = this.buildFosterPerson();
+    id = fosterPerson.getId();
   }
 
   @Test
@@ -57,7 +59,7 @@ class FosterPersonServiceImplTest {
 
     when(fosterPersonRepository.findById(1L)).thenReturn(Optional.empty());
 
-    assertThatThrownBy(() -> underTest.getFosterPerson(fosterPerson.getId()))
+    assertThatThrownBy(() -> underTest.getFosterPerson(id))
         .isInstanceOf(ResourceNotFoundException.class)
         .hasMessage(String.format("foster person with id %s not found", fosterPerson.getId()));
   }
@@ -85,7 +87,8 @@ class FosterPersonServiceImplTest {
     when(fosterPersonRepository.existsFosterPersonByEmail(request.getEmail())).thenReturn(true);
 
     assertThatThrownBy(() -> underTest.addFosterPerson(request))
-        .isInstanceOf(DuplicateResourceException.class).hasMessage(ExceptionUtils.EMAIL_ALREADY_TAKEN.toString());
+        .isInstanceOf(DuplicateResourceException.class)
+        .hasMessage(ExceptionUtils.EMAIL_ALREADY_TAKEN.toString());
   }
 
   @Test
@@ -116,7 +119,7 @@ class FosterPersonServiceImplTest {
 
     when(fosterPersonRepository.findById(fosterPerson.getId())).thenReturn(Optional.empty());
 
-    assertThatThrownBy(() -> underTest.updateFosterPerson(fosterPerson.getId(), updateReq))
+    assertThatThrownBy(() -> underTest.updateFosterPerson(id, updateReq))
         .isInstanceOf(ResourceNotFoundException.class)
         .hasMessage(String.format("foster person with id %s not found", fosterPerson.getId()));
   }
@@ -206,7 +209,7 @@ class FosterPersonServiceImplTest {
     when(fosterPersonRepository.existsFosterPersonByEmail("newEmail"))
         .thenReturn(true);
 
-    assertThatThrownBy(() -> underTest.updateFosterPerson(fosterPerson.getId(), updateReq))
+    assertThatThrownBy(() -> underTest.updateFosterPerson(id, updateReq))
         .isInstanceOf(DuplicateResourceException.class)
         .hasMessage(ExceptionUtils.EMAIL_ALREADY_TAKEN.toString());
   }
@@ -315,8 +318,9 @@ class FosterPersonServiceImplTest {
         fosterPerson.getLastName(), fosterPerson.getEmail(),
         fosterPerson.getCity(), fosterPerson.getAddress(), fosterPerson.getPhoneNumber());
 
-    assertThatThrownBy(() -> underTest.updateFosterPerson(fosterPerson.getId(), updateReq))
-        .isInstanceOf(RequestValidationException.class).hasMessage(ExceptionUtils.NO_DATA_CHANGES_FOUND.toString());
+    assertThatThrownBy(() -> underTest.updateFosterPerson(id, updateReq))
+        .isInstanceOf(RequestValidationException.class)
+        .hasMessage(ExceptionUtils.NO_DATA_CHANGES_FOUND.toString());
   }
 
   @Test
@@ -324,7 +328,7 @@ class FosterPersonServiceImplTest {
 
     when(fosterPersonRepository.existsFosterPersonById(fosterPerson.getId())).thenReturn(false);
 
-    assertThatThrownBy(() -> underTest.deleteFosterPersonById(fosterPerson.getId()))
+    assertThatThrownBy(() -> underTest.deleteFosterPersonById(id))
         .isInstanceOf(ResourceNotFoundException.class)
         .hasMessage(String.format("foster person with id %s not found", fosterPerson.getId()));
   }

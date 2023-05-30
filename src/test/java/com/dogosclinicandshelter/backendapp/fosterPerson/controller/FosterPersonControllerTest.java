@@ -48,7 +48,7 @@ class FosterPersonControllerTest {
 
 
   @Test
-  void getFosterPersons() throws Exception {
+  void getFosterPersonsTest() throws Exception {
     when(fosterPersonService.getAllFosterPersons()).thenReturn(List.of(fosterPersonDto));
     MvcResult mvcResult = mockMvc.perform(get("/api/v1/foster/"))
         .andExpect(status().isOk()).andReturn();
@@ -57,16 +57,16 @@ class FosterPersonControllerTest {
   }
 
   @Test
-  void getFosterPerson() throws Exception {
-    when(fosterPersonService.getFosterPerson(1l)).thenReturn(fosterPersonDto);
+  void getFosterPersonTest() throws Exception {
+    when(fosterPersonService.getFosterPerson(1L)).thenReturn(fosterPersonDto);
     MvcResult mvcResult = mockMvc.perform(get("/api/v1/foster/" + "1"))
         .andExpect(status().isOk()).andReturn();
     assertEquals(convertToJson(fosterPersonDto), mvcResult.getResponse().getContentAsString());
   }
 
   @Test
-  void getFosterPersonNotFound() throws Exception {
-    when(fosterPersonService.getFosterPerson(1l)).thenThrow(
+  void getFosterPersonNotFoundTest() throws Exception {
+    when(fosterPersonService.getFosterPerson(1L)).thenThrow(
         new ResourceNotFoundException(String.format("foster person with id %s not found", 1)));
     MvcResult mvcResult = mockMvc.perform(get("/api/v1/foster/" + "1"))
         .andExpect(status().isNotFound()).andReturn();
@@ -74,7 +74,7 @@ class FosterPersonControllerTest {
   }
 
   @Test
-  void registerFosterPerson() throws Exception {
+  void registerFosterPersonTest() throws Exception {
     when(fosterPersonService.addFosterPerson(any())).thenReturn(true);
     MvcResult mvcResult = mockMvc.perform(post("/api/v1/foster/")
         .contentType(MediaType.APPLICATION_JSON)
@@ -88,7 +88,7 @@ class FosterPersonControllerTest {
   }
 
   @Test
-  void registerFosterPersonFailed() throws Exception {
+  void registerFosterPersonFailedTest() throws Exception {
     when(fosterPersonService.addFosterPerson(any())).thenReturn(false);
     MvcResult mvcResult = mockMvc.perform(post("/api/v1/foster/")
         .contentType(MediaType.APPLICATION_JSON)
@@ -102,7 +102,7 @@ class FosterPersonControllerTest {
   }
 
   @Test
-  void deleteFosterPerson() throws Exception {
+  void deleteFosterPersonTest() throws Exception {
     when(fosterPersonService.deleteFosterPersonById(1L)).thenReturn(true);
 
     MvcResult mvcResult = mockMvc.perform(delete("/api/v1/foster/" + "1"))
@@ -114,7 +114,7 @@ class FosterPersonControllerTest {
   }
 
   @Test
-  void deleteFosterPersonFailed() throws Exception {
+  void deleteFosterPersonFailedTest() throws Exception {
     when(fosterPersonService.deleteFosterPersonById(1L)).thenReturn(false);
 
     MvcResult mvcResult = mockMvc.perform(delete("/api/v1/foster/" + "1"))
@@ -127,7 +127,7 @@ class FosterPersonControllerTest {
   }
 
   @Test
-  void updateFosterPerson() throws Exception {
+  void updateFosterPersonTest() throws Exception {
     when(fosterPersonService.updateFosterPerson(any(), any())).thenReturn(true);
     MvcResult mvcResult = mockMvc.perform(put("/api/v1/foster/1")
         .contentType(MediaType.APPLICATION_JSON)
@@ -141,7 +141,7 @@ class FosterPersonControllerTest {
   }
 
   @Test
-  void updateFosterPersonFailed() throws Exception {
+  void updateFosterPersonFailedTest() throws Exception {
     when(fosterPersonService.updateFosterPerson(any(), any())).thenReturn(false);
     MvcResult mvcResult = mockMvc.perform(put("/api/v1/foster/1")
         .contentType(MediaType.APPLICATION_JSON)
@@ -167,10 +167,8 @@ class FosterPersonControllerTest {
   }
 
   private PersonDataRequest fosterPersonRequest() {
-    PersonDataRequest personDataRequest = new PersonDataRequest("jonny", "dorian",
+    return new PersonDataRequest("jonny", "dorian",
         "jonny@email.com", "Cluj-Napoca", "Street New 1", "0749223311");
-    return personDataRequest;
-
   }
 
   private String convertToJson(FosterPersonDto fosterPersonDto) throws JsonProcessingException {
